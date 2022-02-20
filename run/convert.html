@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Test</title>
+</head>
+<body>
+
+	<input type="text" name="input" id='input'>
+	<button onclick='convert()'>Submit</button>
+
+	<script type="text/javascript">
+
+		function convert() {
+			let input = document.querySelector('#input');
+			let valInput = input.value;
+
+			//split address after dot
+			const splitArray = valInput.split('.');
+			if(splitArray.length < 4) {
+				alert("Error");
+			}
+
+			else {
+				//array for bin values
+				const binArray = [];
+				for(let i=0; i<splitArray.length; ++i) {
+					//convert from string into int
+					let intType = parseInt(splitArray[i]);
+					//if conver to INT number is NaN break looop
+					if(isNaN(intType)) {
+						alert("Different data");
+						break;
+					}
+					//if number isn't NaN conbert numbers to bin
+					else {
+						//convert numbers from dec to bin
+						let bin = intType.toString(2);
+						//append 0 to convert number
+						let addZero = bin.padStart(8,'0');
+						//append convert number to array for bin numbers
+						binArray.push(addZero);
+					}
+				}
+				//if bunArray length is 4 show results
+				if(binArray.length == 4) {
+					console.log(binArray);
+				}
+			}
+		}
+
+		
+
+	</script>
+
+</body>
+</html>
