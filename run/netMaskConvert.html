@@ -7,19 +7,39 @@
 </head>
 <body>
 
-	<select id="select"></select>
+	<select id="select">
+		<option>--Select--</option>
+	</select>
 
 	<script type="text/javascript">
 		
 		function run() {
-			const select = document.querySelector('#select');
-
+			
+			//select
+			let select = document.querySelector("#select");
+			
+			//import JSON file
 			let request = new Request("masks.json");
-
+			//get data from JSON file
 			fetch(request)
+				//
 				.then(function(resp) {
-					return resp.json;
+					//return JS Object
+					return resp.json();
 				})
+				//get data from Object
+				.then(function(data) {
+					for(let i=1; i<=32; ++i) {
+						//create option
+						let option = document.createElement("option");
+						//set class for option
+						option.class = "option";
+						//set text for option
+						option.innerHTML = "/"+i+" "+data.masks[i];
+						//and append option to select
+						select.appendChild(option);
+					}	
+				});
 			
 
 		}
