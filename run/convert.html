@@ -8,16 +8,17 @@
 <body>
 
 	<input type="text" name="input" id='input'>
-	<button onclick='convert()'>Submit</button>
+	<select id="select">
+		<option>--Select--</option>
+	</select>
+	<button onclick='network_address()'>Submit</button>
 
 	<script type="text/javascript">
 
-		function convert() {
-			let input = document.querySelector('#input');
-			let valInput = input.value;
+		function convert(data) {
 
 			//split address after dot
-			const splitArray = valInput.split('.');
+			const splitArray = data.split('.');
 			if(splitArray.length < 4) {
 				alert("Error");
 			}
@@ -43,14 +44,90 @@
 						binArray.push(addZero);
 					}
 				}
+
+				let binAddress = "";
 				//if bunArray length is 4 show results
 				if(binArray.length == 4) {
-					console.log(binArray);
+					for(let i=0; i<binArray.length; i++) {
+						if(i == binArray.length-1) {
+							binAddress += binArray[i];
+						}
+						else {
+							binAddress += binArray[i]+".";
+						}
+
+					}
+					return binAddress;
 				}
 			}
 		}
 
+		function get_mask() {
+			//select
+			let select = document.querySelector("#select");
+			
+			//import JSON file
+			let request = new Request("masks.json");
+			//get data from JSON file
+			fetch(request)
+				//
+				.then(function(resp) {
+					//return JS Object
+					return resp.json();
+				})
+				//get data from Object
+				.then(function(data) {
+					for(let i=1; i<=32; ++i) {
+						//create option
+						let option = document.createElement("option");
+						//set class for option
+						option.class = "option";
+						//set text for option
+						option.innerHTML = "/"+i+" "+data.masks[i];
+						//set value
+						option.value = data.masks[i];
+						//and append option to select
+						select.appendChild(option);
+					}	
+				});
+			
+
+		}
+
+		function network_address() {
+			//get input value
+			let input = document.querySelector('#input').value;
+			//run previous function with convert to bin
+			let ipBin = convert(input);
+
+
+			let masks = document.querySelector('#select').value;
+			let maskBin = convert(masks);
+
+			let networkAddres = "";
+
+			for(let i=0; i<ipBin.length; ++i) {
+				if(ipBin[i] != '.' && maskBin != '.') {
+					networkAddres += (ipBin[i]&maskBin[i]);
+				}
+				else if(ipBin[i] == '.' && maskBin[i] == '.') {
+					networkAddres += '.';
+				}
+
+			}
+			console.log(networkAddres);
+
+		}
+
+
+
+		get_mask();
+
 		
+
+
+
+
 
 	</script>
 
