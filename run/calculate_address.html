@@ -100,21 +100,42 @@
 			//run previous function with convert to bin
 			let ipBin = convert(input);
 
-
+			//get mask value from select
 			let masks = document.querySelector('#select').value;
+			//convert mask to bianry
 			let maskBin = convert(masks);
 
-			let networkAddres = "";
-
+			//network addres in binary
+			let networkAddresBin = "";
 			for(let i=0; i<ipBin.length; ++i) {
+				//if ipBin[i] and maskBin[i] != '.'
+				//append AND validation to networkAddresBin
 				if(ipBin[i] != '.' && maskBin != '.') {
-					networkAddres += (ipBin[i]&maskBin[i]);
+					networkAddresBin += (ipBin[i]&maskBin[i]);
 				}
+				//else ipBin[i] and maskBin[i] == '.'
+				//append dot to networkAddresBin
 				else if(ipBin[i] == '.' && maskBin[i] == '.') {
-					networkAddres += '.';
+					networkAddresBin += '.';
 				}
 
 			}
+
+			//split networkAddresBin
+			let splitNetworkAddress = networkAddresBin.split('.');
+			//var to networkAddress in dec
+			let networkAddres = "";
+			for(let i=0; i<splitNetworkAddress.length; ++i) {
+				//convert from bin to dec
+				networkAddres += parseInt(splitNetworkAddress[i], 2);
+				//if i != last data from split append dot 
+				//after append convert networkAddres octec 
+				if(i != splitNetworkAddress.length-1) {
+					networkAddres += '.';
+				}
+			}
+
+
 			console.log(networkAddres);
 
 		}
