@@ -122,15 +122,15 @@
 			}
 
 			//split networkAddresBin
-			let splitNetworkAddress = networkAddresBin.split('.');
+			let splitNetworkAddressBin = networkAddresBin.split('.');
 			//var to networkAddress in dec
 			let networkAddres = "";
-			for(let i=0; i<splitNetworkAddress.length; ++i) {
+			for(let i=0; i<splitNetworkAddressBin.length; ++i) {
 				//convert from bin to dec
-				networkAddres += parseInt(splitNetworkAddress[i], 2);
+				networkAddres += parseInt(splitNetworkAddressBin[i], 2);
 				//if i != last data from split append dot 
 				//after append convert networkAddres octec 
-				if(i != splitNetworkAddress.length-1) {
+				if(i != splitNetworkAddressBin.length-1) {
 					networkAddres += '.';
 				}
 			}
