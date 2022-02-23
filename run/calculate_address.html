@@ -7,16 +7,34 @@
 </head>
 <body>
 
-	<input type="text" name="input" id='input'>
-	<select id="select">
+	<input type="text" name="input" id='ipaddress'>
+	<select id="masksSelector">
 		<option>--Select--</option>
 	</select>
-	<button onclick='network_address()'>Submit</button>
+	<button onclick='print_data()'>Submit</button>
 
 	<script type="text/javascript">
 
-		function convert(data) {
+		function convertToDec(data) {
+			//split data
+			let dataSplit = data.split('.');
+			//var for bin in dec
+			let decAddress = "";
+			for(let i=0; i<dataSplit.length; ++i) {
+				//convert from bin to dec
+				decAddress += parseInt(dataSplit[i], 2);
+				//if i != last data from split append dot 
+				//after append convert data octec 
+				if(i != dataSplit.length-1) {
+					decAddress += '.';
+				}
+			}
 
+			return decAddress;
+		} 
+
+
+		function convertToBin(data) {
 			//split address after dot
 			const splitArray = data.split('.');
 			if(splitArray.length < 4) {
@@ -64,7 +82,7 @@
 
 		function get_mask() {
 			//select
-			let select = document.querySelector("#select");
+			let select = document.querySelector("#masksSelector");
 			
 			//import JSON file
 			let request = new Request("masks.json");
@@ -95,15 +113,15 @@
 		}
 
 		function network_address() {
-			//get input value
-			let input = document.querySelector('#input').value;
+			//get ip value
+			let IPaddress = document.querySelector('#ipaddress').value;
 			//run previous function with convert to bin
-			let ipBin = convert(input);
+			let ipBin = convertToBin(IPaddress);
 
 			//get mask value from select
-			let masks = document.querySelector('#select').value;
+			let mask = document.querySelector('#masksSelector').value;
 			//convert mask to bianry
-			let maskBin = convert(masks);
+			let maskBin = convertToBin(mask);
 
 			//network addres in binary
 			let networkAddresBin = "";
@@ -121,32 +139,78 @@
 
 			}
 
-			//split networkAddresBin
-			let splitNetworkAddressBin = networkAddresBin.split('.');
 			//var to networkAddress in dec
-			let networkAddres = "";
-			for(let i=0; i<splitNetworkAddressBin.length; ++i) {
-				//convert from bin to dec
-				networkAddres += parseInt(splitNetworkAddressBin[i], 2);
-				//if i != last data from split append dot 
-				//after append convert networkAddres octec 
-				if(i != splitNetworkAddressBin.length-1) {
-					networkAddres += '.';
-				}
-			}
+			let networkAddres = convertToDec(networkAddresBin);
 
-
-			console.log(networkAddres);
+			return networkAddres;
 
 		}
 
 
+		function broadcast_address() {
+			//get mask value from select
+			let mask = document.querySelector('#masksSelector').value;
+			//convert mask to bianry
+			let maskBin = convertToBin(mask);
 
-		get_mask();
+			//netowrk address
+			const netowrkAddress = network_address();
+			//NOT mask bin
+			let notMaskBin = "";
+			for(let i=0; i<maskBin.length; ++i) {
+				//if char in mas bin is 1 add 0
+				if(maskBin[i] == '1') {
+					notMaskBin+='0';
+				}
+				//if char in mas bin is 0 add 1
+				else if(maskBin[i] == '0') {
+					notMaskBin+='1';
+				}
+				//if char in mas bin is . add .
+				else if(maskBin[i] == '.') {
+					notMaskBin+='.';
+				}
+			}
 
-		
+			//convert NOT bin mask to dec
+			let maskNotDec = convertToDec(notMaskBin);
+			//split not dec mask 
+			let splitMaskNotDec = maskNotDec.split('.');
+			//split netowrk address
+			let splitNetworkAddress = netowrkAddress.split('.');
+
+			//broadcast address
+			let broadcastAddress = "";
+			for(let i=0; i<splitNetworkAddress.length; ++i) {
+				//add data to new var
+				broadcastAddress += (parseInt(splitMaskNotDec[i]) + parseInt(splitNetworkAddress[i]));
+				//add dot after add data to new var
+				if(i != splitNetworkAddress.length-1) {
+					broadcastAddress += '.';
+				}
+			}
+
+			return broadcastAddress;
+
+		}
+
+		function print_data() {
+			//get input value
+			let IPaddress = document.querySelector('#ipaddress').value;
+			//get mask value from select
+			let mask = document.querySelector('#masksSelector').value;
+
+			console.log("Ip address: ",IPaddress);
+			console.log("Mask: ",mask);
+			console.log("Network address: ",network_address());
+			console.log("Broadcast address: ",broadcast_address());
+		}
 
 
+
+		window.onload = function() {
+			get_mask();
+		}
 
 
 
