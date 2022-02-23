@@ -182,7 +182,7 @@
 			//broadcast address
 			let broadcastAddress = "";
 			for(let i=0; i<splitNetworkAddress.length; ++i) {
-				//add data to new var
+				//add data to broadcast var and convert to INT type
 				broadcastAddress += (parseInt(splitMaskNotDec[i]) + parseInt(splitNetworkAddress[i]));
 				//add dot after add data to new var
 				if(i != splitNetworkAddress.length-1) {
