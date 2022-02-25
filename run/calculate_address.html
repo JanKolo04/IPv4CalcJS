@@ -7,9 +7,9 @@
 </head>
 <body>
 
-	<input type="text" name="input" id='ipaddress'>
+	<input type="text" name="input" id='ipaddress' required placeholder="Adress IP...">
 	<select id="masksSelector">
-		<option disabled selected>Select mask</option>
+		<option disabled selected value="0">Select mask</option>
 	</select>
 	<button onclick='print_data()'>Submit</button>
 
@@ -37,47 +37,37 @@
 		function convertToBin(data) {
 			//split address after dot
 			const splitArray = data.split('.');
-			if(splitArray.length < 4) {
-				alert("Error");
+			//array for bin values
+			const binArray = [];
+			for(let i=0; i<splitArray.length; ++i) {
+				//convert from string into int
+				let intType = parseInt(splitArray[i]);
+				//if number isn't NaN conbert numbers to bin
+				if(!isNaN(intType)) {
+					//convert numbers from dec to bin
+					let bin = intType.toString(2);
+					//append 0 to convert number
+					let addZero = bin.padStart(8,'0');
+					//append convert number to array for bin numbers
+					binArray.push(addZero);
+				}
 			}
 
-			else {
-				//array for bin values
-				const binArray = [];
-				for(let i=0; i<splitArray.length; ++i) {
-					//convert from string into int
-					let intType = parseInt(splitArray[i]);
-					//if conver to INT number is NaN break looop
-					if(isNaN(intType)) {
-						alert("Different data");
-						break;
+			let binAddress = "";
+			//if bunArray length is 4 show results
+			if(binArray.length == 4) {
+				for(let i=0; i<binArray.length; i++) {
+					if(i == binArray.length-1) {
+						binAddress += binArray[i];
 					}
-					//if number isn't NaN conbert numbers to bin
 					else {
-						//convert numbers from dec to bin
-						let bin = intType.toString(2);
-						//append 0 to convert number
-						let addZero = bin.padStart(8,'0');
-						//append convert number to array for bin numbers
-						binArray.push(addZero);
+						binAddress += binArray[i]+".";
 					}
-				}
 
-				let binAddress = "";
-				//if bunArray length is 4 show results
-				if(binArray.length == 4) {
-					for(let i=0; i<binArray.length; i++) {
-						if(i == binArray.length-1) {
-							binAddress += binArray[i];
-						}
-						else {
-							binAddress += binArray[i]+".";
-						}
-
-					}
-					return binAddress;
 				}
+				return binAddress;
 			}
+			
 		}
 
 		function get_mask() {
@@ -117,11 +107,12 @@
 			//run previous function with convert to bin
 			let ipBin = convertToBin(IPaddress);
 
-			if(ipBin != null) {
-				//get mask value from select
-				let mask = document.querySelector('#masksSelector').value;
-				//convert mask to bianry
-				let maskBin = convertToBin(mask);
+			//get mask value from select
+			let mask = document.querySelector('#masksSelector').value;
+			//convert mask to bianry
+			let maskBin = convertToBin(mask);
+
+			if(ipBin !== undefined && mask != '0') {
 
 				//network addres in binary
 				let networkAddresBin = "";
@@ -145,6 +136,9 @@
 				return networkAddres;
 			
 			}
+			else {
+				return undefined;
+			}
 		}
 
 
@@ -156,7 +150,7 @@
 
 			//netowrk address
 			let netowrkAddress = network_address();
-			if(netowrkAddress !== undefined) {
+			if(netowrkAddress !== undefined && mask != '0') {
 				//NOT mask bin
 				let notMaskBin = "";
 				for(let i=0; i<maskBin.length; ++i) {
@@ -201,65 +195,67 @@
 
 		function hosts() {
 			//network address
-			let networkAddres = network_address();
+			let networkAddress = network_address();
 			//broadcast address
 			let broadcastAddress = broadcast_address();
 
-			//split network address
-			const splitNetworkAddress = networkAddres.split('.');
-			//get last length 
-			let lengthSplitNetwork = splitNetworkAddress.length - 1;
-			//chnage last value from address
-			let lastValueNetoworkAddress = parseInt(splitNetworkAddress[lengthSplitNetwork]) + 1;
+			if(networkAddress !== undefined) {
+				//split network address
+				const splitNetworkAddress = networkAddress.split('.');
+				//get last length 
+				let lengthSplitNetwork = splitNetworkAddress.length - 1;
+				//chnage last value from address
+				let lastValueNetoworkAddress = parseInt(splitNetworkAddress[lengthSplitNetwork]) + 1;
 
-			//first host in netowrk
-			let firsHost = "";
-			for(let i=0; i<splitNetworkAddress.length; ++i) {
-				//if i ist last element of splitNetworkAddress
-				//append elements from splitNetworkAddress
-				if(i!=splitNetworkAddress.length-1) {
-					firsHost += splitNetworkAddress[i];
-					firsHost+='.';
+				//first host in netowrk
+				let firsHost = "";
+				for(let i=0; i<splitNetworkAddress.length; ++i) {
+					//if i ist last element of splitNetworkAddress
+					//append elements from splitNetworkAddress
+					if(i!=splitNetworkAddress.length-1) {
+						firsHost += splitNetworkAddress[i];
+						firsHost+='.';
+					}
+					//else append modify last value to addres
+					else if(i == splitNetworkAddress.length-1) {
+						firsHost += lastValueNetoworkAddress;
+					}
 				}
-				//else append modify last value to addres
-				else if(i == splitNetworkAddress.length-1) {
-					firsHost += lastValueNetoworkAddress;
+
+
+
+
+				//calculate last host in netowrk
+				//split broadcast address
+				const splitBroadcast = broadcastAddress.split('.');
+				//get last length 
+				let lengthSplitBroadcast = splitBroadcast.length - 1;
+				//chnage last value from address
+				let lastvalueBroadcastAddress = parseInt(splitBroadcast[lengthSplitBroadcast]) - 1;
+
+				//first host in netowrk
+				let lastHost = "";
+				for(let i=0; i<splitBroadcast.length; ++i) {
+					//if i ist last element of splitBroadcast
+					//append elements from splitBroadcast
+					if(i!=splitBroadcast.length-1) {
+						lastHost += splitBroadcast[i];
+						lastHost+='.';
+					}
+					//else append modify last value to addres
+					else if(i == splitBroadcast.length-1) {
+						lastHost += lastvalueBroadcastAddress;
+					}
 				}
+
+				//array with return value
+				const objectWithHosts = {
+					"firstHost":firsHost,
+					"lastHost":lastHost
+				};
+
+				return objectWithHosts;
 			}
-
-
-
-
-			//calculate last host in netowrk
-			//split broadcast address
-			const splitBroadcast = broadcastAddress.split('.');
-			//get last length 
-			let lengthSplitBroadcast = splitBroadcast.length - 1;
-			//chnage last value from address
-			let lastvalueBroadcastAddress = parseInt(splitBroadcast[lengthSplitBroadcast]) - 1;
-
-			//first host in netowrk
-			let lastHost = "";
-			for(let i=0; i<splitBroadcast.length; ++i) {
-				//if i ist last element of splitBroadcast
-				//append elements from splitBroadcast
-				if(i!=splitBroadcast.length-1) {
-					lastHost += splitBroadcast[i];
-					lastHost+='.';
-				}
-				//else append modify last value to addres
-				else if(i == splitBroadcast.length-1) {
-					lastHost += lastvalueBroadcastAddress;
-				}
-			}
-
-			//array with return value
-			const objectWithHosts = {
-				"firstHost":firsHost,
-				"lastHost":lastHost
-			};
-
-			return objectWithHosts;
 		}
 
 
@@ -298,16 +294,29 @@
 			//object with hosts
 			let hostObject = hosts();
 
-			console.log("Ip address: ",IPaddress);
-			console.log("Mask: ",mask);
-			console.log("Network address: ",network_address());
-			console.log("Broadcast address: ",broadcast_address());
-			console.log("First host: ",hostObject['firstHost']);
-			console.log("Last host: ",hostObject['lastHost']);
-			console.log("All hosts: ",all_hosts());
+			if(network_address() !== undefined && mask !== "0") {
+				console.log("Ip address: ",IPaddress);
+				console.log("Mask: ",mask);
+				console.log("Network address: ",network_address());
+				console.log("Broadcast address: ",broadcast_address());
+				console.log("First host: ",hostObject['firstHost']);
+				console.log("Last host: ",hostObject['lastHost']);
+				console.log("All hosts: ",all_hosts());
+			}
+
+			else if(mask == '0' && network_address() === undefined) {
+				alert("Worng IP and mask didn't selected");
+			}
+
+			else if(mask == '0'){
+				alert("Mask didn't selected!");
+			}
+			else if(network_address() === undefined) {
+				alert("Wrong IP");
+			}
+			
 
 		}
-
 
 
 		window.onload = function() {
