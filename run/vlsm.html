@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Vlsm</title>
+</head>
+<body>
+
+	<div id="main">
+			
+		<input type="text" name="ip" placeholder="Ip address...">
+		<input type="text" name="countSubmasks" placeholder="Count of submasks...">
+
+		<button id="button">Submit</button>
+
+	</div>
+
+
+	<script type="text/javascript">
+
+		//object with masks
+		let arrayWithMasks = [];
+
+
+		function convertToBin(data) {
+			//split address after dot
+			const splitArray = data.split('.');
+			//array for bin values
+			const binArray = [];
+			for(let i=0; i<splitArray.length; ++i) {
+				//convert from string into int
+				let intType = parseInt(splitArray[i]);
+				//if number isn't NaN conbert numbers to bin
+				if(!isNaN(intType)) {
+					//convert numbers from dec to bin
+					let bin = intType.toString(2);
+					//append 0 to convert number
+					let addZero = bin.padStart(8,'0');
+					//append convert number to array for bin numbers
+					binArray.push(addZero);
+				}
+			}
+
+			let binAddress = "";
+			//if bunArray length is 4 show results
+			if(binArray.length == 4) {
+				for(let i=0; i<binArray.length; i++) {
+					if(i == binArray.length-1) {
+						binAddress += binArray[i];
+					}
+					else {
+						binAddress += binArray[i]+".";
+					}
+
+				}
+				return binAddress;
+			}
+			
+		}
+
+
+		function calcuate_hosts_from_mask_and_append_pick_greate_mask() {
+			//mask with nedded hosts
+			let mask = "";
+			//for loop to check all masks
+			for(let i=0; i<arrayWithMasks.length; ++i) {
+				//convert mask to bianry
+				let maskBin = convertToBin(arrayWithMasks[i]);
+
+				//counter for 1
+				let counter = 0;
+				for(let i=0; i<maskBin.length; ++i) {
+					if(maskBin[i] == '1') {
+						counter++;
+					}
+				}
+
+				//to wich pow code must calculate
+				let wichPow = 32-counter;
+				//pow
+				let pow = Math.pow(2, wichPow);
+				//hosts
+				let allHosts = pow-2;
+
+				//if all count of hosts is bigger than nedded hosts
+				//add mask to mask variable
+				if(allHosts > 30) {
+					//add mask to mask variable
+					mask = arrayWithMasks[i];
+				}
+
+			}
+			console.log(mask);
+		}
+
+		
+		function append_all_masks_into_array() {
+			//import JSON file
+			let request = new Request("masks.json");
+
+			//get data from JSON file
+			fetch(request)
+				.then(function(resp) {
+					//return JS Object
+					return resp.json();
+				})
+				//get data from Object
+				.then(function(data) {
+					//loop to append all masks into array
+					for(let i=1; i<=32; ++i) {
+						arrayWithMasks.push(data.masks[i]);
+					}
+					//run fucntion with pick great maks
+					calcuate_hosts_from_mask_and_append_pick_greate_mask();
+				});
+		}
+
+
+		append_all_masks_into_array();
+		
+
+
+
+
+
+	</script>
+
+</body>
+</html>
