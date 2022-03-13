@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>test</title>
+</head>
+<body>
+
+	<p id="text5" class="text">Siema 1</p>
+	<p id="text2" class="text">Siema 2</p>
+	<p id="text6" class="text">Siema 3</p>
+	<p id="text7" class="text">Siema 4</p>
+
+	<button onclick="change()">Click</button>
+
+
+	<script type="text/javascript">
+		
+
+
+		function run(i) {
+			if(text = document.querySelector('#text'+i)) {
+				let ip = text.textContent;
+				return ip
+			}
+			else {
+				return "siema";
+			}
+		}
+
+
+		function change() {
+			for(let i=1; i<=4; ++i) {
+				console.log(run(i));
+			}
+		}
+
+	</script>
+
+</body>
+</html>
