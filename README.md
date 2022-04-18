@@ -3,8 +3,6 @@ Website with calculator IPv4
 
 
 ## TO DO
-- [x] calculate broadcast address
-- [x] calculate network address
-- [x] last and first host in network
+- [ ] if last part of ip is 255 and append 1 is 256 so uset AND method to add 1 to part
 - [ ] frontend for calculator
 - [ ] security
