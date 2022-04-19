@@ -16,16 +16,35 @@
 
 		<div id="hostInputHolder"></div><br>
 
-		<button id="button1" onclick="create_hosts_input()">Submit</button>
+		<button id="button1">Submit</button>
 
-		<div id="holder"></div>
+		<div id="holder">
+			<p id="resultsText" style="display: none;">Results:</p>
+		</div>
 
 	</div>
 
 
 	<script type="text/javascript">
+		let button = document.querySelector("#button1");
 
-		let arrayWithMasks = ["128.0.0.0","192.0.0.0","224.0.0.0","240.0.0.0","248.0.0.0","252.0.0.0","254.0.0.0","255.0.0.0","255.128.0.0","255.192.0.0","255.224.0.0","255.240.0.0","255.248.0.0","255.252.0.0","255.254.0.0","255.255.0.0","255.255.128.0","255.255.192.0","255.255.224.0","255.255.240.0","255.255.248.0","255.255.252.0","255.255.254.0","255.255.255.0","255.255.255.128","255.255.255.192","255.255.255.224","255.255.255.240","255.255.255.248","255.255.255.252","255.255.255.254","255.255.255.255"]
+		//submasks lenght checker
+		let checker = 0;
+		button.addEventListener("click", function() {
+			//subasks input value
+			let submasks = document.querySelector("#submasksCount").value;
+			if(submasks != checker) {
+				create_hosts_input();
+				checker = submasks;
+			}
+			else {
+				allRun();
+			}
+
+		});
+
+
+		let arrayWithMasks = ["128.0.0.0","192.0.0.0","224.0.0.0","240.0.0.0","248.0.0.0","252.0.0.0","254.0.0.0","255.0.0.0","255.128.0.0","255.192.0.0","255.224.0.0","255.240.0.0","255.248.0.0","255.252.0.0","255.254.0.0","255.255.0.0","255.255.128.0","255.255.192.0","255.255.224.0","255.255.240.0","255.255.248.0","255.255.252.0","255.255.254.0","255.255.255.0","255.255.255.128","255.255.255.192","255.255.255.224","255.255.255.240","255.255.255.248","255.255.255.252","255.255.255.254","255.255.255.255"];
 
 
 		function create_hosts_input() {
@@ -34,6 +53,16 @@
 			//div hostInputHolder
 			let hostInputHolder = document.querySelector("#hostInputHolder");
 
+			//get all inputs where we writeing hostcount
+			let counts = document.querySelectorAll(".hostsCount");
+			//if lenght counts is bigger than 0 do code
+			if(counts.length > 0) {
+				//for loop remove all inputs with host count
+				for(let i=0; i<counts.length; ++i) {
+					//remove
+					counts[i].remove();
+				}
+			}
 			//for loop for create good count of inputs 
 			for(let i=0; i<submasks; ++i) {
 				//create element
@@ -52,6 +81,7 @@
 				//append input into main
 				hostInputHolder.appendChild(input);
 			}
+
 		}
 
 		function convertToDec(data) {
@@ -153,6 +183,22 @@
 				ipBin = convertToBin(String(ip));
 			}
 			else {
+				//split ip addressses
+				let splitIp = newIP.split('.');
+				//if last part of ip is 255
+				if(splitIp[3] == '255') {
+					//add 1 to 3 part of ip
+					let newPart = parseInt(splitIp[2]) + 1;
+					//and put all together
+					newIP = splitIp[0]+'.'+splitIp[1]+'.'+String(newPart)+'.0';
+				}
+				else {
+					//but if last part is not 255
+					//add 1 to last part of ip
+					let newPart = parseInt(splitIp[3]) + 1;
+					//and put all together
+					newIP = splitIp[0]+'.'+splitIp[1]+'.'+splitIp[2]+'.'+String(newPart);
+				}
 				//convert ip to bin
 				ipBin = convertToBin(String(newIP));	
 			}
@@ -238,33 +284,35 @@
 
 
 		function allRun() {
+			//holder for text
+			let holder = document.querySelector("#holder");
 			//ip from input
 			let ip = document.querySelector("#ipaddress").value;
 			//other ip
 			let newIp = "";
-			
+
+			//set display turn on for results text
+			document.querySelector("#resultsText").style = "display: block;";
+			//select all input with hosts class
+			let allHosts = document.querySelectorAll(".hostsCount");
 			for(let i=0; i<document.querySelector("#submasksCount").value; ++i) {
-				//select all input with hosts class
-				let allHosts = document.querySelectorAll(".hostsCount");
+				//create p
+				let p = document.createElement("p");
+				//set class for p
+				p.className = "text";
+				//set text
+				p.innerHTML = network_address(ip, newIp, select_great_mask(allHosts[i].value))+' ---> '+broadcast_address(ip, newIp, select_great_mask(allHosts[i].value));
+				//and append text into holder
+				holder.appendChild(p);
 
-				//if i is 1 plus 1 into ip addr
-				if(i > 0) {
-					//split other ip for add to last part of ip addr
-					let splitOtherIp = newIp.split('.');
-					//last part of ip
-					let lastIpPart = splitOtherIp.slice(-1);
-					//add 1 into ip
-					let plus1 = parseInt(lastIpPart)+1;
-					//other Ip
-					newIp = splitOtherIp[0]+'.'+splitOtherIp[1]+'.'+splitOtherIp[2]+'.'+plus1;
-
-				}
+				/*
 				//run function 
 				console.log("Network addresses: "+network_address(ip, newIp, select_great_mask(allHosts[i].value)));
 
 				console.log("Broadcast addresses: "+broadcast_address(ip, newIp, select_great_mask(allHosts[i].value)));
 
 				console.log("");
+				*/
 
 				newIp = broadcast_address(ip, newIp, select_great_mask(allHosts[i].value));
 			}
