@@ -8,6 +8,18 @@
 	<link rel="stylesheet" type="text/css" href="css/style-calIP.css">
 	<script type="text/javascript" src="js/script-calIP.js"></script>
 
+   	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js">
+    </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/css/bootstrap-select.min.css" integrity="sha512-mR/b5Y7FRsKqrYZou7uysnOdCIJib/7r5QeJMFvLNHNhtye3xJp1TdJVPLtetkukFn227nKpXD9OjUc09lx97Q==" crossorigin="anonymous"
+	  referrerpolicy="no-referrer"/>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/js/bootstrap-select.min.js" integrity="sha512-FHZVRMUW9FsXobt+ONiix6Z0tIkxvQfxtCSirkKc5Sb4TKHmqq1dZa8DphF0XqKb3ldLu/wgMa8mT6uXiLlRlw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 	<title>Kalkulator IP</title>
 </head>
 <body>
@@ -19,15 +31,54 @@
 		</div>
 
 		<div id="inputsHolder">
-			<input type="text" name="addresses" placeholder="Wpisz adres IP...">
-			<input type="text" name="subnetmask" placeholder="Wpisz maske...">
+			<input type="text" id="ipaddress" name="addresses" placeholder="Wpisz adres IP...">
+
+			<div class="row d-flex justify-content-center align-items-center" id="selectRow" style="width: 100% !important;">
+				<select class="selectpicker" name="mask" title="Wybierz maske" id="masksSelector" aria-label="size 3 select example">
+					<option value="128.0.0.0">/1 128.0.0.0</option>
+					<option value="192.0.0.0">/2 192.0.0.0</option>
+					<option value="224.0.0.0">/3 224.0.0.0</option>
+					<option value="240.0.0.0">/4 240.0.0.0</option>
+					<option value="248.0.0.0">/5 248.0.0.0</option>
+					<option value="252.0.0.0">/6 252.0.0.0</option>
+					<option value="254.0.0.0">/7 254.0.0.0</option>
+					<option value="255.0.0.0">/8 255.0.0.0</option>
+					<option value="255.128.0.0">/9 255.128.0.0</option>
+					<option value="255.192.0.0">/10 255.192.0.0</option>
+					<option value="255.224.0.0">/11 255.224.0.0</option>
+					<option value="255.240.0.0">/12 255.240.0.0</option>
+					<option value="255.248.0.0">/13 255.248.0.0</option>
+					<option value="255.252.0.0">/14 255.252.0.0</option>
+					<option value="255.254.0.0">/15 255.254.0.0</option>
+					<option value="255.255.0.0">/16 255.255.0.0</option>
+					<option value="255.255.128.0">/17 255.255.128.0</option>
+					<option value="255.255.192.0">/18 255.255.192.0</option>
+					<option value="255.255.224.0">/19 255.255.224.0</option>
+					<option value="255.255.248.0">/20 255.255.240.0</option>
+					<option value="255.255.248.0">/21 255.255.248.0</option>
+					<option value="255.255.252.0">/22 255.255.252.0</option>
+					<option value="255.255.254.0">/23 255.255.254.0</option>
+					<option value="255.255.255.0">/24 255.255.255.0</option>
+					<option value="255.255.255.128">/25 255.255.255.128</option>
+					<option value="255.255.255.192">/26 255.255.255.192</option>
+					<option value="255.255.255.224">/27 255.255.255.224</option>
+					<option value="255.255.255.240">/28 255.255.255.240</option>
+					<option value="255.255.255.248">/29 255.255.255.248</option>
+					<option value="255.255.255.252">/30 255.255.255.252</option>
+					<option value="255.255.255.254">/31 255.255.255.254</option>
+					<option value="255.255.255.255">/32 255.255.255.255</option>
+				</select>
+			</div>
+
 		</div>
 
 		<div id="otherHolder">
-			<button id="submit">Oblicz</button>
+			<button id="submit" onclick="print_data()">Oblicz</button>
 		</div>
 
-		<p id="text" style="display: none;">Witaj mordo!</p>
+		<p id="text"></p>
+
+
 	</div>
 
 </body>
