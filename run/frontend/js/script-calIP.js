@@ -244,7 +244,9 @@ function print_data() {
 	let hostObject = hosts();
 
 	if(network_address() !== undefined && mask !== "0") {
+		//run animation on click
 		$("#holder").css("animation-name", "submit");
+		//run function with fadeIn in jquery
 		$("#text").fadeIn(2500);
 
 		let resultsText = "Ip address: "+IPaddress+'<br>'+"Mask: "+mask+'<br>'+"Network address: "+network_address()+'<br>'+

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Test</title>
+</head>
+<body>
+
+	<div>
+	  <button class="button">Collapse</button>
+	  
+	  <div class="content">
+	    <p class="collapsible">
+	This is a block of text that is collapsed through JavaScript. It is more complicated than using max-height with similar performance. The transition timings are now fixed but we've introduced some coupling between our CSS and JS.
+	    </p>
+	    <p>
+	Praesent nec feugiat enim. In vitae elementum erat. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque vitae lectus varius ipsum tempor maximus in ac eros. Mauris lacus lorem, elementum non lacus vitae, interdum commodo odio.
+	    </p>
+	  </div>
+	</div>
+
+
+	<script type="text/javascript">
+		const button = document.querySelector('.button');
+
+		button.addEventListener('click', () => {
+		  const content = document.querySelector('.collapsible');
+		  expandElement();
+		});
+
+		function expandElement() {
+			let elem = document.createElement("input");
+			elem.className = "collapsible";
+			document.querySelector(".content").appendChild(elem);
+
+			const startHeight = window.getComputedStyle(elem).height;
+
+			// Remove the collapse class, and force a layout calculation to get the final height
+			elem.classList.toggle('collapsed');
+			const height = window.getComputedStyle(elem).height;
+
+			// Set the start height to begin the transition
+			elem.style.height = startHeight;
+
+			// wait until the next frame so that everything has time to update before starting the transition
+			requestAnimationFrame(() => {
+			elem.style.transition = '';
+
+				requestAnimationFrame(() => {
+				    elem.style.height = height
+				})
+			})
+		  
+		}
+	</script>
+
+
+	<style type="text/css">
+		
+		.collapsible {
+		  overflow: hidden;
+		  transition: all 1s ease-in-out;
+		  height: 0px;
+		}
+
+		.collapsible.collapsed {
+		  height: auto;
+		}
+
+	</style>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
