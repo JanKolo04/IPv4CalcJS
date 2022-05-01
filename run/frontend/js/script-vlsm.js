@@ -281,7 +281,7 @@ function broadcast_address(ip, newIP, maskBinOld) {
 
 function allRun() {
 	//holder for text
-	let holder = document.querySelector("#holder");
+	let holder = document.querySelector("#textHolderDiv");
 	//ip from input
 	let ip = document.querySelector("#ipaddress").value;
 	//other ip
@@ -289,17 +289,22 @@ function allRun() {
 
 	//select all input with hosts class
 	let allHosts = document.querySelectorAll(".hostsCount");
-	//text p
-	let p = document.querySelector("#text");
-	p.innerHTML = "";
 	for(let i=0; i<document.querySelector("#submasksCount").value; ++i) {
+		//create p
+		let p = document.createElement("P");
+		//set classname
+		p.className = "text"
 		//set text for <p>
-		p.innerHTML += network_address(ip, newIp, select_great_mask(allHosts[i].value))+' --> '+broadcast_address(ip, newIp, select_great_mask(allHosts[i].value))+'<br>';
-
+		let x = i+1;
+		p.innerHTML = x+'. '+network_address(ip, newIp, select_great_mask(allHosts[i].value))+' --> '+broadcast_address(ip, newIp, select_great_mask(allHosts[i].value));
+		//append into holder
+		holder.appendChild(p);
 		newIp = broadcast_address(ip, newIp, select_great_mask(allHosts[i].value));
 	}
 
 	$("#textHolderDiv").css("animation-name", "submit");
+	$(".text").css("animation-name", "submitText");
+
 
 }
 
