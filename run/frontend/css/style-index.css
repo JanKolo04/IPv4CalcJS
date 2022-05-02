@@ -1,0 +1,123 @@
+/*----------BANER----------*/
+#baner {
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 80px;
+	display: flex;
+	align-items: center;
+	background-color: white;
+	box-shadow: 10px 6px 5px #d9d9d9;
+}
+
+#divLogo {
+	height: 80px;
+	display: flex;
+	justify-items: center;
+	align-items: center;
+}
+
+#divLogo h1 {
+   	margin: 0px;
+   	margin-left: 20px;
+    font-weight: bold;
+    font-size: 28px;
+    color: #0066ff;
+    text-shadow: 2px 2px #d9d9d9;
+}
+
+#divLogo a {
+	text-decoration: none;
+}
+
+#importDataHolder {
+	padding-bottom: 150px;
+}
+
+/*-----------FOOTER---------*/
+#footer {
+	padding-bottom: 40px;
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	border-top: 1px solid #bfbfbf;
+}
+
+#infoDiv {
+	width: 50%;
+	height: 114px;
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+}
+#infoDiv p {
+	margin: 0px;
+	margin-left: 30px;
+}
+
+
+#iconsDiv {
+	width: 50%;
+	height: 114px;
+	display: flex;
+	justify-content: end;
+	align-items: center;
+	flex-direction: column;
+}
+
+#footer i {
+	font-size: 19px;
+}
+
+#iconsDiv {
+	padding: 10px 40px;
+	height: 114px;
+	width: 100%;
+	display: flex;
+	justify-content: end;
+	align-items: center;
+}
+
+#iconsDiv img {
+	margin-right: 10px;
+	width: 20px;
+}
+
+
+/*---media footer---*/
+@media screen and (max-width: 455px) {
+	#footer {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column-reverse;
+		padding-bottom: 20px;
+		padding-top: 10px;
+	}
+
+	#infoDiv {
+		width: 100%;
+		justify-content: center;
+		align-items: start;
+		text-align: center;
+	}
+
+	#autorDiv {
+		justify-content: center;
+		align-items: flex-end;
+	}
+
+	#footer p {
+		margin: 5px;
+	}
+
+	#autor {
+		text-align: center;
+	}
+
+	#iconsDiv {
+		padding: 0px 0px;
+		justify-content: center;
+		align-items: start;
+	}
+}

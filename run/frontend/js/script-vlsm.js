@@ -6,12 +6,22 @@ window.onload = function() {
 	button.addEventListener("click", function() {
 		//subasks input value
 		let submasks = document.querySelector("#submasksCount").value;
-		if(submasks != checker) {
-			create_hosts_input();
-			checker = submasks;
+		//ip addresses
+		let ip = document.querySelector("#ipaddress").value;
+		if((ip == "") || (convertToBin(ip) == undefined)) {
+			alert("Zły adres IP!");
+		}
+		else if((submasks > 0) && (submasks < 11)) {
+			if(submasks != checker) {
+				create_hosts_input();
+				checker = submasks;
+			}
+			else {
+				allRun();
+			}
 		}
 		else {
-			allRun();
+			alert("Złe dane zostały wprawdzone w ilości sieci!\nMożesz tylko obliczyć minimum 1 sieci i maksymalnie 10 sieci!");
 		}
 
 	});
@@ -24,6 +34,7 @@ let arrayWithMasks = ["128.0.0.0","192.0.0.0","224.0.0.0","240.0.0.0","248.0.0.0
 function create_hosts_input() {
 	//get submasks count
 	let submasks = document.querySelector("#submasksCount").value;
+
 	//div hostInputHolder
 	let hostInputHolder = document.querySelector("#hostInputHolder");
 
@@ -77,8 +88,8 @@ function create_hosts_input() {
 			})
 		})
 	}
-
 }
+
 
 function convertToDec(data) {
 	//split data
@@ -304,6 +315,7 @@ function allRun() {
 
 	$("#textHolderDiv").css("animation-name", "submit");
 	$(".text").css("animation-name", "submitText");
+
 
 
 }
