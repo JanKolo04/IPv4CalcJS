@@ -7,6 +7,7 @@ Website with calculator IPv4
 - [x] frontend for calculator
 - [ ] check if really work VLSM
 - [ ] change language from eng to polish
+- [ ] change css in footer
 
 
 
