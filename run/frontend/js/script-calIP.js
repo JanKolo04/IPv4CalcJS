@@ -64,7 +64,7 @@ function network_address() {
 	//convert mask to bianry
 	let maskBin = convertToBin(mask);
 
-	if(ipBin !== undefined && mask != '0') {
+	if(ipBin !== undefined && mask != '') {
 
 		//network addres in binary
 		let networkAddresBin = "";
@@ -239,36 +239,44 @@ function print_data() {
 	let IPaddress = document.querySelector('#ipaddress').value;
 	//get mask value from select
 	let mask = document.querySelector('#masksSelector').value;
-
 	//object with hosts
 	let hostObject = hosts();
 
-	if(network_address() !== undefined && mask !== "0") {
+	if((network_address() !== undefined) && (mask != "")) {
 		//run animation on click
 		$("#holder").css("animation-name", "submit");
 		//run function with fadeIn in jquery
 		$("#text").fadeIn(2500);
 
-		let resultsText = "Ip address: "+IPaddress+'<br>'+"Mask: "+mask+'<br>'+"Network address: "+network_address()+'<br>'+
+		let resultsText = "IP address: "+IPaddress+'<br>'+"Mask: "+mask+'<br>'+"Network address: "+network_address()+'<br>'+
 		"Broadcast address: "+broadcast_address()+'<br>'+"First host: "+hostObject['firstHost']+'<br>'+"Last host: "+hostObject['lastHost']+'<br>'+
 		"All hosts: "+all_hosts();
 
 		document.querySelector("#text").innerHTML = resultsText;
 	}
 
-	else if(mask == '0' && network_address() === undefined) {
-		alert("Worng IP and mask didn't selected");
+	else if((mask == '') && (IPaddress == "")) {
+		alert("Nie wpisano adresu IP i nie wybrano maski!"); 
 	}
 
-	else if(mask == '0'){
-		alert("Mask didn't selected!");
+	else if(mask == "" && convertToBin(IPaddress) != undefined) {
+		alert("Maska nie została wybrana!");
 	}
-	else if(network_address() === undefined) {
-		alert("Wrong IP");
+	else if(IPaddress == "" && mask != "") {
+		alert("Nie wpisano adresu IP!");
 	}
-	
+	else if(network_address() == undefined && mask != "") {
+		alert("Adres IP jest niepoprawny!");
+	}
+
+	else if(mask == "" && network_address() == undefined) {
+		alert("Maska nie została wybrana i adres IP jest niepoprawny!");
+	}
 
 }
+
+
+
 
 
 

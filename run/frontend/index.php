@@ -31,8 +31,14 @@
 
 	<div id="importDataHolder">
 		<?php
-
-			$strona = $_GET['strona'];
+			//defoult page
+			$strona = "choice";
+			//if isset GET variable replace data in variable
+			if(isset($_GET['strona'])) {
+				//replace data
+				$strona = $_GET['strona'];
+			}
+			//include target page
 			include($strona.".html");
 
 		?>
