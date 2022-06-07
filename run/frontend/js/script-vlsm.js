@@ -150,6 +150,8 @@ function convertToBin(data) {
 function select_great_mask(hostCount) {
 	//mask
 	let mask = "";
+	//short mask prefix
+	let shortMaskPrefix = "";
 	//loop to select great mask for needed hosts
 	for(let i=0; i<arrayWithMasks.length; ++i) {
 		//convert mask to bianry
@@ -166,17 +168,23 @@ function select_great_mask(hostCount) {
 		//to wich pow code must calculate
 		let wichPow = 32-counter;
 		//pow
-		let pow = Math.pow(2,wichPow );
+		let pow = Math.pow(2,wichPow);
 		//hosts
 		let allHosts = pow-2;
 
-		if(allHosts > hostCount) {
+		if(allHosts >= hostCount) {
 			mask = arrayWithMasks[i];
+			shortMaskPrefix = counter;
 		}
 	}
 	let maskBin = convertToBin(mask);
 
-	return maskBin;
+	let returnArray = {
+		"mask": maskBin,
+		"prefix": shortMaskPrefix
+	};
+
+	return returnArray;
 }
 
 
@@ -307,10 +315,12 @@ function allRun() {
 		p.className = "text"
 		//set text for <p>
 		let x = i+1;
-		p.innerHTML = x+'. '+network_address(ip, newIp, select_great_mask(allHosts[i].value))+' --> '+broadcast_address(ip, newIp, select_great_mask(allHosts[i].value));
+		//mask in dec
+		let mask = select_great_mask(allHosts[i].value);
+		p.innerHTML = x+'. '+network_address(ip, newIp, mask["mask"])+' --> '+broadcast_address(ip, newIp, mask["mask"])+' /'+mask["prefix"];
 		//append into holder
 		holder.appendChild(p);
-		newIp = broadcast_address(ip, newIp, select_great_mask(allHosts[i].value));
+		newIp = broadcast_address(ip, newIp, mask["mask"]);
 	}
 
 	$("#textHolderDiv").css("animation-name", "submit");
