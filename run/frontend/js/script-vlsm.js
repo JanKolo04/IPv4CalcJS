@@ -216,6 +216,8 @@ function select_great_mask(hostCount) {
 
 
 
+
+
 function network_address(ip, newIP, maskBinOld) {
 	//variable with ip in bin
 	let ipBin = "";
