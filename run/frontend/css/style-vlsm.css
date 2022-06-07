@@ -7,7 +7,7 @@ body {
 	margin: auto;
 	margin-top: 70px;
 	height: auto;
-	width: 600px;
+	width: 60%;
 	border: none;
 	border-radius: 6px;
 	animation-duration: 2s;
@@ -61,6 +61,23 @@ body {
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
+}
+
+#ipAndMask {
+	width: 100%;
+	padding: 0px 10px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: row;
+}
+
+#ipAndMask input {
+	width: calc(35% - 10px);
+}
+
+#ipAndMask select {
+	width: calc(35% - 10px);
 }
 
 .input {

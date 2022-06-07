@@ -8,16 +8,27 @@ window.onload = function() {
 		let submasks = document.querySelector("#submasksCount").value;
 		//ip addresses
 		let ip = document.querySelector("#ipaddress").value;
-		if((ip == "") || (convertToBin(ip) == undefined)) {
+
+		//validation
+		if(ip == "") {
+			alert("Nie podano adresu IP!");
+		}
+		else if(convertToBin(ip) == undefined) {
 			alert("Zły adres IP!");
 		}
+		
 		else if((submasks > 0) && (submasks < 11)) {
 			if(submasks != checker) {
 				create_hosts_input();
 				checker = submasks;
 			}
 			else {
-				allRun();
+				if(check_count_hosts() == true) {
+					allRun();
+				}
+				else {
+					alert("Ilośc hostów jest niepoprawna!");
+				}
 			}
 		}
 		else {
@@ -145,6 +156,22 @@ function convertToBin(data) {
 	}
 }
 
+function check_count_hosts() {
+	//mask
+	let mask = document.querySelector("#mask").value;
+	console.log(mask);
+
+	return true;
+	//get all count of hosts
+	let hosts = document.querySelectorAll(".hostsCount");
+	//sum hosts
+	let sum = 0;
+	for(let i=0; i<hosts.length; ++i) {
+		suma += hosts[i].value;
+	}
+	if()
+
+}
 
 
 function select_great_mask(hostCount) {
@@ -308,6 +335,17 @@ function allRun() {
 
 	//select all input with hosts class
 	let allHosts = document.querySelectorAll(".hostsCount");
+
+	//if isset p with results delete
+	if(document.querySelectorAll(".text").length > 0) {
+		let resultText = document.querySelectorAll(".text");
+		//loop to delete old results
+		for(let i=0; i<resultText.length; ++i) {
+			//delete old results
+			resultText[i].remove();
+		}
+	}
+
 	for(let i=0; i<document.querySelector("#submasksCount").value; ++i) {
 		//create p
 		let p = document.createElement("P");
