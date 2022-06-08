@@ -1,3 +1,6 @@
+import {all_hosts} from "./script-calIP.js";
+
+
 window.onload = function() {
 	let button = document.querySelector("#submit");
 
@@ -158,8 +161,7 @@ function convertToBin(data) {
 
 function check_count_hosts() {
 	//mask
-	let mask = document.querySelector("#mask").value;
-	console.log(mask);
+	let mask = document.querySelector("#masksSelector").value;
 
 	return true;
 	//get all count of hosts
@@ -167,9 +169,17 @@ function check_count_hosts() {
 	//sum hosts
 	let sum = 0;
 	for(let i=0; i<hosts.length; ++i) {
-		suma += hosts[i].value;
+		sum += hosts[i].value;
 	}
-	if()
+	//get hosts from selected mask
+	let default_maks = all_hosts();
+	console.log(default_maks);
+	//if default_mask host count is less than all needed hosts in submasks
+	//return error
+	if(sum > default_maks) {
+		return false;
+	}
+	else {return true;}
 
 }
 
@@ -241,7 +251,7 @@ function network_address(ip, newIP, maskBinOld) {
 			newIP = splitIp[0]+'.'+splitIp[1]+'.'+splitIp[2]+'.'+String(newPart);
 		}
 		//convert ip to bin
-		ipBin = convertToBin(String(newIP));	
+		ipBin = convertToBin(String(newIP));
 	}
 
 	//convert maskBin into string
@@ -335,35 +345,38 @@ function allRun() {
 	//select all input with hosts class
 	let allHosts = document.querySelectorAll(".hostsCount");
 
-	//if isset p with results delete
-	if(document.querySelectorAll(".text").length > 0) {
-		let resultText = document.querySelectorAll(".text");
-		//loop to delete old results
-		for(let i=0; i<resultText.length; ++i) {
-			//delete old results
-			resultText[i].remove();
+	if(check_count_hosts() == true) {
+		//if isset p with results delete
+		if(document.querySelectorAll(".text").length > 0) {
+			let resultText = document.querySelectorAll(".text");
+			//loop to delete old results
+			for(let i=0; i<resultText.length; ++i) {
+				//delete old results
+				resultText[i].remove();
+			}
 		}
+
+		for(let i=0; i<document.querySelector("#submasksCount").value; ++i) {
+			//create p
+			let p = document.createElement("P");
+			//set classname
+			p.className = "text"
+			//set text for <p>
+			let x = i+1;
+			//mask in dec
+			let mask = select_great_mask(allHosts[i].value);
+			p.innerHTML = x+'. '+network_address(ip, newIp, mask["mask"])+' --> '+broadcast_address(ip, newIp, mask["mask"])+' /'+mask["prefix"];
+			//append into holder
+			holder.appendChild(p);
+			newIp = broadcast_address(ip, newIp, mask["mask"]);
+		}
+
+		$("#textHolderDiv").css("animation-name", "submit");
+		$(".text").css("animation-name", "submitText");
 	}
-
-	for(let i=0; i<document.querySelector("#submasksCount").value; ++i) {
-		//create p
-		let p = document.createElement("P");
-		//set classname
-		p.className = "text"
-		//set text for <p>
-		let x = i+1;
-		//mask in dec
-		let mask = select_great_mask(allHosts[i].value);
-		p.innerHTML = x+'. '+network_address(ip, newIp, mask["mask"])+' --> '+broadcast_address(ip, newIp, mask["mask"])+' /'+mask["prefix"];
-		//append into holder
-		holder.appendChild(p);
-		newIp = broadcast_address(ip, newIp, mask["mask"]);
+	else {
+		alert("Maska ma za mało hostów!");
 	}
-
-	$("#textHolderDiv").css("animation-name", "submit");
-	$(".text").css("animation-name", "submitText");
-
-
 
 }
 
