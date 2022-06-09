@@ -1,6 +1,3 @@
-import {all_hosts} from "./script-calIP.js";
-
-
 window.onload = function() {
 	let button = document.querySelector("#submit");
 
@@ -26,7 +23,7 @@ window.onload = function() {
 				checker = submasks;
 			}
 			else {
-				if(check_count_hosts() == true) {
+				if(check_host_count() == true) {
 					allRun();
 				}
 				else {
@@ -159,11 +156,32 @@ function convertToBin(data) {
 	}
 }
 
-function check_count_hosts() {
-	//mask
-	let mask = document.querySelector("#masksSelector").value;
+function all_hosts() {
+	//get mask value from select
+	let mask = document.querySelector('#masksSelector').value;
+	//convert mask to bianry
+	let maskBin = convertToBin(mask);
 
-	return true;
+	//counter for 1
+	let counter = 0;
+	for(let i=0; i<maskBin.length; ++i) {
+		if(maskBin[i] == '1') {
+			counter++;
+		}
+	}
+
+	//to wich pow code must calculate
+	let wichPow = 32-counter;
+	//pow
+	let pow = Math.pow(2,wichPow );
+	//hosts
+	let allHosts = pow-2;
+	
+	return allHosts;
+
+}
+
+function check_host_count() {
 	//get all count of hosts
 	let hosts = document.querySelectorAll(".hostsCount");
 	//sum hosts
@@ -173,7 +191,6 @@ function check_count_hosts() {
 	}
 	//get hosts from selected mask
 	let default_maks = all_hosts();
-	console.log(default_maks);
 	//if default_mask host count is less than all needed hosts in submasks
 	//return error
 	if(sum > default_maks) {
@@ -242,6 +259,7 @@ function network_address(ip, newIP, maskBinOld) {
 			let newPart = parseInt(splitIp[2]) + 1;
 			//and put all together
 			newIP = splitIp[0]+'.'+splitIp[1]+'.'+String(newPart)+'.0';
+			console.log(newIP);
 		}
 		else {
 			//but if last part is not 255
