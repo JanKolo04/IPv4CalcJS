@@ -111,14 +111,14 @@ body {
 	flex-wrap: wrap;
 }
 
-.collapsible {
-	width: 50px;
+#hostInputHolder .collapsible {
+	width: 150px;
 	overflow: hidden;
 	transition: all 1s ease-in-out;
  	height: 0px;
 }
 
-.collapsed {
+#hostInputHolder .collapsed {
 	height: auto;
 }
 
@@ -170,6 +170,11 @@ body {
 	30%{opacity: 0.0;}
 	90%{opacity: 0.8;}
 	100%{opacity: 1;}
+}
+
+@media screen and (max-width: 800px) {
+	#ipAndMask {flex-direction: column;}
+	#ipAndMask input {width: 40%; !import}
 }
 
 

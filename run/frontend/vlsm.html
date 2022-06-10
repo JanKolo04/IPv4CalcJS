@@ -24,7 +24,7 @@
 				<input class="input" type="text" name="ip" id="ipaddress" placeholder="Wpisz adres IP...">
 				
 				<select id="masksSelector">
-					<option selected disabled>Wybierz maske</option>
+					<option selected disabled value="0">Wybierz maske</option>
 					<option value="128.0.0.0">/1 128.0.0.0</option>
 					<option value="192.0.0.0">/2 192.0.0.0</option>
 					<option value="224.0.0.0">/3 224.0.0.0</option>
@@ -60,7 +60,19 @@
 				</select>
 			</div>
 
-			<input class="input" type="number" name="submasksCount" id="submasksCount" placeholder="Ile chcesz obliczyć zakresów sieci..." min="0" max="10">
+			<select id="submasksCount">
+				<option selected disabled>Wybierz ilośc hostów</option>
+				<option>1</option>
+				<option>2</option>
+				<option>3</option>
+				<option>4</option>
+				<option>5</option>
+				<option>6</option>
+				<option>7</option>
+				<option>8</option>
+				<option>9</option>
+				<option>10</option>
+			</select>
 		</div>
 
 		<div id="hostInputHolder"></div>

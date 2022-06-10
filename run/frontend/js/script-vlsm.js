@@ -16,6 +16,9 @@ window.onload = function() {
 		else if(convertToBin(ip) == undefined) {
 			alert("Zły adres IP!");
 		}
+		else if(document.querySelector("#masksSelector").value == 0) {
+			alert("Nie wybrano maski");
+		}
 		
 		else if((submasks > 0) && (submasks < 11)) {
 			if(submasks != checker) {
@@ -37,7 +40,6 @@ window.onload = function() {
 
 	});
 }; 
-
 
 let arrayWithMasks = ["128.0.0.0","192.0.0.0","224.0.0.0","240.0.0.0","248.0.0.0","252.0.0.0","254.0.0.0","255.0.0.0","255.128.0.0","255.192.0.0","255.224.0.0","255.240.0.0","255.248.0.0","255.252.0.0","255.254.0.0","255.255.0.0","255.255.128.0","255.255.192.0","255.255.224.0","255.255.240.0","255.255.248.0","255.255.252.0","255.255.254.0","255.255.255.0","255.255.255.128","255.255.255.192","255.255.255.224","255.255.255.240","255.255.255.248","255.255.255.252","255.255.255.254","255.255.255.255"];
 
@@ -68,12 +70,10 @@ function create_hosts_input() {
 		//set classname
 		input.className = "input collapsible hostsCount";
 		//set placeholder
-		input.placeholder = "Host count...";
+		input.placeholder = "Liczba hostów...";
 		//set min and max value
 		input.min = "1";
 		input.max = "500";
-		//set value
-		input.value = "1";
 		//append input into main
 		hostInputHolder.appendChild(input);
 	}
@@ -159,6 +159,7 @@ function convertToBin(data) {
 function all_hosts() {
 	//get mask value from select
 	let mask = document.querySelector('#masksSelector').value;
+
 	//convert mask to bianry
 	let maskBin = convertToBin(mask);
 
@@ -187,10 +188,11 @@ function check_host_count() {
 	//sum hosts
 	let sum = 0;
 	for(let i=0; i<hosts.length; ++i) {
-		sum += hosts[i].value;
+		sum += parseInt(hosts[i].value);
 	}
 	//get hosts from selected mask
 	let default_maks = all_hosts();
+
 	//if default_mask host count is less than all needed hosts in submasks
 	//return error
 	if(sum > default_maks) {
@@ -363,7 +365,7 @@ function allRun() {
 	//select all input with hosts class
 	let allHosts = document.querySelectorAll(".hostsCount");
 
-	if(check_count_hosts() == true) {
+	if(check_host_count() == true) {
 		//if isset p with results delete
 		if(document.querySelectorAll(".text").length > 0) {
 			let resultText = document.querySelectorAll(".text");
@@ -382,7 +384,7 @@ function allRun() {
 			//set text for <p>
 			let x = i+1;
 			//mask in dec
-			let mask = select_great_mask(allHosts[i].value);
+			let mask = select_great_mask(parseInt(allHosts[i].value));
 			p.innerHTML = x+'. '+network_address(ip, newIp, mask["mask"])+' --> '+broadcast_address(ip, newIp, mask["mask"])+' /'+mask["prefix"];
 			//append into holder
 			holder.appendChild(p);
@@ -395,7 +397,7 @@ function allRun() {
 	else {
 		alert("Maska ma za mało hostów!");
 	}
-
+hostInputHolder
 }
 
 
